@@ -1,0 +1,22 @@
+const activities_list = [
+//         //List the status's to show on the bot's status.
+//         `${client.guilds.cache.size} servers`,
+//         `${client.users.cache.size} users | ${prefix}help`,
+//         `${prefix}help`,
+//         `43 commands & 0 aliases`,
+//         `${prefix}stats`
+    
+//     ]
+    
+//     const type_list = [
+//         //Types of activities to list. Must match the cooresponding listed status.
+//        "WATCHING",
+//        "WATCHING",
+//        "LISTENING",
+//        "WATCHING",
+//        "PLAYING",
+//     ]
+//     setInterval(() => {
+//         const index = Math.floor(Math.random() * (activities_list.length - 1) + 1);
+//         client.user.setActivity(activities_list[index], {type: type_list[index]}); 
+//   }, 10000);

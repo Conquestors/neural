@@ -1,0 +1,17 @@
+const activities = [
+    "through your window",
+    'mrpewpewmann',
+    'your mother',
+    'the world end',
+    'your behavior',
+    'main-chat',
+    'cat videos'
+    ];
+
+bot.on('ready', () => {
+    console.log('I am locked and loaded')
+    bot.user.setActivity(activities[Math.floor(Math.random() * (activities.length - 1) + 1)]);
+    setInterval(() => {
+        bot.user.setActivity(activities[Math.floor(Math.random() * (activities - 1) + 1)], { type: 'WATCHING' });
+    }, 20000); 
+});
