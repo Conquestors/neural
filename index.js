@@ -1,12 +1,25 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const express = require('express');
+const app = express();
+
+app.get('/', (request, response) => {
+     response.sendStatus(200);
+});
+
+let listener = app.listen(process.env.PORT, () => {
+     console.log('Your app is currently listening on port: ' + listener.address().port);
+});
+
+
+const Discord = require('discord.js')
+const client = new Discord.Client()
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 client.aliases = new Discord.Collection();
 const cooldowns = new Discord.Collection();
-const fs = require('fs');
+const keepAlive = require("./server.js");
+const fs = require("fs");
 const db = require('quick.db');
-const { prefix, token } = require('./config.json');
+const { prefix, token, default_prefix } = require('./config.js');
 
 
 
@@ -17,11 +30,7 @@ client.on('ready', async () => {
          name: "watcjin"
      })     
     console.log(`${client.user.tag} has been executed. The bot is now online in ${client.guilds.cache.size} servers.`)
-    
-    
 
-    
-    
 })
 
 client.on('guildCreate', guild =>{
@@ -40,9 +49,9 @@ client.on('guildCreate', guild =>{
 
 client.on('guildDelete', guild =>{
     const channelId = '763302346654351412';
-    const channel = client.channels.cache.get(channelId); //The channel that the new guild message will log in.
-    const sowner = guild.owner.user; //The owner of the guild added.
-    if(!channel) return; //If the channel is invalid it returns, and does not send anything.
+    const channel = client.channels.cache.get(channelId); //This Gets That Channel
+    const sowner = guild.owner.user; //This Gets The Guild Owner
+    if(!channel) return; //If the channel is invalid it returns
     const embed = new Discord.MessageEmbed()
         .setTitle('Guild Removed')
         .setDescription(`**Guild Name:** ${guild.name} (${guild.id})\n**Members:** ${guild.memberCount}\n**Owner:** ${sowner.tag}`)
@@ -61,11 +70,18 @@ for (const file of commandFiles) {
 
 	client.commands.set(commands.name, commands);
 }
+ 
 
 client.on('message', async message => {
+    if(!message.guild) return;
+
+    let prefix = db.get(`prefix_${message.guild.id}`)
+    
+    if(prefix === null) prefix = default_prefix;
+
 
     if (message.content.startsWith(`<@!727685745887674439>`)) {
-        message.reply(`The prefix set for this bot is ${prefix}. For a list of commands, execute ${prefix}help.`)
+        message.reply(`The prefix configured for this guild is \`${prefix}\`. For a list of commands, execute ${prefix}help.`)
     }
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -102,4 +118,5 @@ client.on('message', async message => {
     }
 })
 
-client.login(token)
+keepAlive()
+    client.login(token)
