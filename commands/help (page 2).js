@@ -1,23 +1,27 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const { prefix } = require('../config.json');
+const { prefix } = require('../config.js');
 module.exports = {
     name: 'help',
     description: "Display the menu of commands for use.",
     cooldown: 3,
 
     execute(message, args) {
+        let userArray = message.content.split(" ");
+        let userArgs = userArray.slice(1);
+        let member = message.mentions.members.first() || message.guild.members.cache.get(userArgs[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === userArgs.slice(0).join(" ") || x.user.username === userArgs[0]) || message.member;
         const data = []
         const { commands } = message.client;
         if(!args.length) {
             
             const helpEmbed = new Discord.MessageEmbed()
+            .setAuthor(member.user.tag, member.user.displayAvatarURL())
             .setTitle("Help Menu")
             .setDescription(`The help menu associated with **Neural** and its commands.`)
             .addFields(
                 {
                     name: 'Informational Command',
-                    value: "Use the help command along with a command associated with Neural for more information on it. (e.g: `>help ping`)"
+                    value: `Use the help command along with a command associated with Neural for more information on it. (e.g: \`${prefix}help ping\`)`
                 }
             )
             .addFields(
@@ -38,8 +42,12 @@ module.exports = {
                     value: "`urban`, `stats`, `serverinfo`, `userinfo`, `uptime`"
                 },
                 {
-                    name: "Economy (Beta)",
+                    name: "**ECONOMY (BETA)**",
                     value: "`daily`, `weekly`, `balance`"
+                },
+                {
+                    name: "**FUN**",
+                    value: "`8ball`, `ask`"
                 }
             )
             .setColor("#5848ff")

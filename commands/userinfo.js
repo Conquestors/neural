@@ -8,6 +8,8 @@ module.exports = {
     aliases: ['ui'],
     cooldown: 2,
     execute(message, args){
+        const { guild } = message
+        const { nickname } = guild
         let userArray = message.content.split(" ");
         let userArgs = userArray.slice(1);
         let member = message.mentions.members.first() || message.guild.members.cache.get(userArgs[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === userArgs.slice(0).join(" ") || x.user.username === userArgs[0]) || message.member;
@@ -29,11 +31,13 @@ module.exports = {
         .setTimestamp()
         .setColor('#a0a4d3')
         .setThumbnail(member.user.displayAvatarURL())
-        .addField("Member ID:", member.id)
+        .addField("User ID:", member.id)
         .addField('Role(s):', `<@&${member._roles.join('> <@&')}>`)
+        .addField('Server Nickname:', member.nickname || `None`)
         .addField("Account Created:", ` ${moment.utc(member.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true) 
         .addField('Joined the Guild:', `${joineddate} \n (${joined} day(s) ago)`)
         .addField("Current Status:", status)
+        .addField("Highest Ranked Role:", member.roles.highest)
     
         message.channel.send(userEmbed);
     }

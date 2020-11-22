@@ -4,7 +4,7 @@
   //  options: ["answer1", "answer2", "answer3", "answer4"],
 //    correct: 1,
 //  },
-//This is a joke command. This is not real.
+
 const Discord = require('discord.js')
 module.exports = {
   name: "eval",

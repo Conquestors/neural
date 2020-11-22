@@ -53,6 +53,11 @@ module.exports = {
                 inline: true,
             },
             {
+                name: "Commands",
+                value: '46',
+                inline: true,
+            },
+            {
                 name: "Uptime",
                 value: `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`
             }
